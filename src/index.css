@@ -1,8 +1,21 @@
 body {
-  background: orangered;
+  background: #333;
+  height: 100vh;
 }
 
 * {
   margin: 0;
   box-sizing: border-box;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#Canvas > canvas {
+  outline: 8px solid cornflowerblue;
+  border-radius: 5px;
 }
