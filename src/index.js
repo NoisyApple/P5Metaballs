@@ -3,6 +3,7 @@ import "./index.css"
 import p5 from "p5"
 
 import Point from "./Point/Point"
+import { marchingSquares } from "./MarchingSquares/functions"
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -12,7 +13,7 @@ const RESOLUTION = 25
 let pointArray
 
 const sketch = (p) => {
-  const drawGrid = () => {
+  const drawPoints = () => {
     for (let i = 0; i < pointArray.length; i++)
       for (let j = 0; j < pointArray[i].length; j++) pointArray[i][j].draw()
   }
@@ -35,7 +36,8 @@ const sketch = (p) => {
   // Draw loop.
   p.draw = () => {
     p.background("#888")
-    drawGrid()
+    // drawPoints()
+    marchingSquares(p, pointArray)
   }
 }
 
