@@ -4,7 +4,7 @@ class Point {
     this.p = p
     this.x = x
     this.y = y
-    this.value = Math.floor(Math.random() * 2)
+    this.value = 0
   }
 
   draw() {

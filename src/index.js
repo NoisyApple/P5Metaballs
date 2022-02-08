@@ -2,7 +2,8 @@ import "./index.css"
 
 import p5 from "p5"
 
-import Point from "./Point/Point"
+import Ball from "./Ball/Ball"
+import PointGrid from "./PointGrid/PointGrid"
 import { marchingSquares } from "./MarchingSquares/functions"
 
 const WIDTH = 600
@@ -10,24 +11,14 @@ const HEIGHT = 600
 
 const RESOLUTION = 25
 
-let pointArray
+let pointGrid
+let ballA
 
 const sketch = (p) => {
-  const drawPoints = () => {
-    for (let i = 0; i < pointArray.length; i++)
-      for (let j = 0; j < pointArray[i].length; j++) pointArray[i][j].draw()
-  }
-
   // Canvas setup.
   p.setup = () => {
-    pointArray = new Array(WIDTH / RESOLUTION + 1)
-
-    for (let i = 0; i < pointArray.length; i++)
-      pointArray[i] = new Array(HEIGHT / RESOLUTION + 1)
-
-    for (let i = 0; i <= WIDTH / RESOLUTION; i++)
-      for (let j = 0; j <= HEIGHT / RESOLUTION; j++)
-        pointArray[i][j] = new Point(p, i * RESOLUTION, j * RESOLUTION)
+    pointGrid = new PointGrid(p, WIDTH, HEIGHT, RESOLUTION)
+    ballA = new Ball(p, WIDTH, HEIGHT)
 
     let canvas = p.createCanvas(WIDTH, HEIGHT)
     canvas.parent("Canvas")
@@ -36,8 +27,10 @@ const sketch = (p) => {
   // Draw loop.
   p.draw = () => {
     p.background("#888")
-    // drawPoints()
-    marchingSquares(p, pointArray)
+    pointGrid.draw()
+    // marchingSquares(p, pointArray)
+    ballA.draw()
+    ballA.update()
   }
 }
 
