@@ -20,7 +20,8 @@ class Ball {
 
   draw() {
     this.p.push()
-    this.p.stroke("black")
+    this.p.stroke("#0008")
+    this.p.fill("#fff8")
     this.p.strokeWeight(5)
     this.p.ellipse(this.x, this.y, this.radius, this.radius)
     this.p.pop()

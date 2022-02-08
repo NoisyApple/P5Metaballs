@@ -9,16 +9,19 @@ import { marchingSquares } from "./MarchingSquares/functions"
 const WIDTH = 600
 const HEIGHT = 600
 
-const RESOLUTION = 25
+const RESOLUTION = 50
 
+let balls
 let pointGrid
-let ballA
 
 const sketch = (p) => {
   // Canvas setup.
   p.setup = () => {
-    pointGrid = new PointGrid(p, WIDTH, HEIGHT, RESOLUTION)
-    ballA = new Ball(p, WIDTH, HEIGHT)
+    balls = new Array(10)
+    for (let i = 0; i < balls.length; i++) balls[i] = new Ball(p, WIDTH, HEIGHT)
+    // balls = balls.map(() => new Ball(p, WIDTH, HEIGHT))
+
+    pointGrid = new PointGrid(p, balls, WIDTH, HEIGHT, RESOLUTION)
 
     let canvas = p.createCanvas(WIDTH, HEIGHT)
     canvas.parent("Canvas")
@@ -27,10 +30,15 @@ const sketch = (p) => {
   // Draw loop.
   p.draw = () => {
     p.background("#888")
+
+    marchingSquares(p, pointGrid.points)
+    for (let i = 0; i < balls.length; i++) {
+      balls[i].draw()
+      balls[i].update()
+    }
+
+    pointGrid.update()
     pointGrid.draw()
-    // marchingSquares(p, pointArray)
-    ballA.draw()
-    ballA.update()
   }
 }
 
