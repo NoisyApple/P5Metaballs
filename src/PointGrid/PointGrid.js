@@ -39,33 +39,37 @@ class PointGrid {
   }
 
   pointBallCollision(point, ball) {
-    let { x, y } = point
+    // let { x, y } = point
 
-    let minX = x - this.canvasWidth / this.canvasResolution / 2
-    let minY = y - this.canvasHeight / this.canvasResolution / 2
-    let ballXDist = Math.abs(ball.x - minX)
-    let ballYDist = Math.abs(ball.y - minY)
+    // let minX = x - this.canvasWidth / this.canvasResolution / 2
+    // let minY = y - this.canvasHeight / this.canvasResolution / 2
+    // let ballXDist = Math.abs(ball.x - minX)
+    // let ballYDist = Math.abs(ball.y - minY)
 
-    if (
-      ballXDist >
-      this.canvasWidth / this.canvasResolution / 2 + ball.radius / 2
-    )
-      return false
-    if (
-      ballYDist >
-      this.canvasHeight / this.canvasResolution / 2 + ball.radius / 2
-    )
-      return false
+    // if (
+    //   ballXDist >
+    //   this.canvasWidth / this.canvasResolution / 2 + ball.radius / 2
+    // )
+    //   return false
+    // if (
+    //   ballYDist >
+    //   this.canvasHeight / this.canvasResolution / 2 + ball.radius / 2
+    // )
+    //   return false
 
-    if (ballXDist <= this.canvasWidth / this.canvasResolution / 2) return true
-    if (ballYDist <= this.canvasHeight / this.canvasResolution / 2) return true
+    // if (ballXDist <= this.canvasWidth / this.canvasResolution / 2) return true
+    // if (ballYDist <= this.canvasHeight / this.canvasResolution / 2) return true
 
-    let cornerDist =
-      (ballXDist - this.canvasWidth / this.canvasResolution / 2) ^
-      (2 + (ballYDist - this.canvasHeight / this.canvasResolution / 2)) ^
-      2
+    // let cornerDist =
+    //   (ballXDist - this.canvasWidth / this.canvasResolution / 2) ^
+    //   (2 + (ballYDist - this.canvasHeight / this.canvasResolution / 2)) ^
+    //   2
 
-    return cornerDist <= ((ball.radius / 2) ^ 2)
+    // return cornerDist <= ((ball.radius / 2) ^ 2)
+
+    let d = this.p.dist(point.x, point.y, ball.x, ball.y)
+
+    return d < 4 + ball.radius
   }
 }
 

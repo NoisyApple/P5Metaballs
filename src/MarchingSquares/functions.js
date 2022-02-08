@@ -12,7 +12,7 @@ const drawSquarePattern = (p, pattern, pointA, pointB, pointC, pointD) => {
   const cD = { x: (cX + dX) / 2, y: cY }
 
   p.push()
-  p.strokeWeight(5)
+  p.strokeWeight(2)
   p.stroke("lightgreen")
 
   // Pattern drawing.

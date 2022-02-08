@@ -5,7 +5,7 @@ class Ball {
     this.y = Math.random() * canvasHeight
     this.velX = Math.random() * 10 - 5
     this.velY = Math.random() * 10 - 5
-    this.radius = Math.random() * 100 + 10
+    this.radius = Math.random() * 50 + 25
     this.canvasWidth = canvasWidth
     this.canvasHeight = canvasHeight
   }
@@ -23,7 +23,7 @@ class Ball {
     this.p.stroke("#0008")
     this.p.fill("#fff8")
     this.p.strokeWeight(5)
-    this.p.ellipse(this.x, this.y, this.radius, this.radius)
+    this.p.ellipse(this.x, this.y, this.radius * 2, this.radius * 2)
     this.p.pop()
   }
 }

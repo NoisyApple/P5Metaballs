@@ -9,7 +9,7 @@ import { marchingSquares } from "./MarchingSquares/functions"
 const WIDTH = 600
 const HEIGHT = 600
 
-const RESOLUTION = 50
+const RESOLUTION = 10
 
 let balls
 let pointGrid
@@ -33,12 +33,12 @@ const sketch = (p) => {
 
     marchingSquares(p, pointGrid.points)
     for (let i = 0; i < balls.length; i++) {
-      balls[i].draw()
+      // balls[i].draw()
       balls[i].update()
     }
 
     pointGrid.update()
-    pointGrid.draw()
+    // pointGrid.draw()
   }
 }
 
