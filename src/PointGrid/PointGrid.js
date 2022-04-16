@@ -27,9 +27,14 @@ class PointGrid {
         let point = this.points[i][j]
         point.value = 0
 
+        let sum = 0
+
         this.balls.forEach((b) => {
-          if (this.pointBallCollision(point, b)) point.value = 1
+          let d = this.p.dist(point.x, point.y, b.x, b.y)
+          sum += (75 * b.radius) / d
+          // if (this.pointBallCollision(point, b)) point.value = 1
         })
+        point.value = sum
       }
   }
 

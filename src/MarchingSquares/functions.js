@@ -1,4 +1,6 @@
-const drawSquarePattern = (p, pattern, pointA, pointB, pointC, pointD) => {
+const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
+  const pattern = mapSquare(pointA, pointB, pointC, pointD)
+
   // Deconstructed points.
   const { x: aX, y: aY } = pointA
   const { x: bX, y: bY } = pointB
@@ -11,9 +13,42 @@ const drawSquarePattern = (p, pattern, pointA, pointB, pointC, pointD) => {
   const bD = { x: bX, y: (bY + dY) / 2 }
   const cD = { x: (cX + dX) / 2, y: cY }
 
+  // const aB = {
+  //   x: p.lerp(
+  //     pointB.value,
+  //     pointA.value,
+  //     (1 - pointA.value) / (pointB.value - pointA.value)
+  //   ),
+  //   y: aY,
+  // }
+  // const aC = {
+  //   x: aX,
+  //   y: p.lerp(
+  //     pointC.value,
+  //     pointA.value,
+  //     (1 - pointA.value) / (pointC.value - pointA.value)
+  //   ),
+  // }
+  // const bD = {
+  //   x: bX,
+  //   y: p.lerp(
+  //     pointD.value,
+  //     pointB.value,
+  //     (1 - pointB.value) / (pointD.value - pointB.value)
+  //   ),
+  // }
+  // const cD = {
+  //   x: p.lerp(
+  //     pointD.value,
+  //     pointC.value,
+  //     (1 - pointC.value) / (pointD.value - pointC.value)
+  //   ),
+  //   y: cY,
+  // }
+
   p.push()
   p.strokeWeight(2)
-  p.stroke("lightgreen")
+  p.stroke("#FAFF81")
 
   // Pattern drawing.
   switch (pattern) {
@@ -107,7 +142,15 @@ const drawSquarePattern = (p, pattern, pointA, pointB, pointC, pointD) => {
 }
 
 const mapSquare = (pointA, pointB, pointC, pointD) => {
-  const binaryValue = `${pointA.value}${pointB.value}${pointC.value}${pointD.value}`
+  let bias = 160
+
+  let a = pointA.value < bias ? 0 : 1
+  let b = pointB.value < bias ? 0 : 1
+  let c = pointC.value < bias ? 0 : 1
+  let d = pointD.value < bias ? 0 : 1
+
+  // const binaryValue = `${pointA.value}${pointB.value}${pointC.value}${pointD.value}`
+  const binaryValue = `${a}${b}${c}${d}`
 
   return parseInt(binaryValue, 2)
 }
@@ -119,13 +162,11 @@ const marchingSquares = (p, pointArray) => {
         continue
 
       let pointA = pointArray[i][j]
-      let pointC = pointArray[i][j + 1]
       let pointB = pointArray[i + 1][j]
+      let pointC = pointArray[i][j + 1]
       let pointD = pointArray[i + 1][j + 1]
 
-      const pattern = mapSquare(pointA, pointB, pointC, pointD)
-
-      drawSquarePattern(p, pattern, pointA, pointB, pointC, pointD)
+      drawSquarePattern(p, pointA, pointB, pointC, pointD)
     }
 }
 

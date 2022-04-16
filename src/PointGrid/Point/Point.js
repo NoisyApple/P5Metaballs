@@ -9,9 +9,13 @@ class Point {
 
   draw() {
     this.p.push()
-    this.p.stroke(this.value ? "black" : "white")
+    // this.p.stroke(this.value ? "black" : "white")
+    this.p.stroke(this.value)
     this.p.strokeWeight(8)
     this.p.point(this.x, this.y)
+    // this.p.fill("#0008")
+    // this.p.textSize(9)
+    // this.p.text(this.value, this.x, this.y)
     this.p.pop()
   }
 }

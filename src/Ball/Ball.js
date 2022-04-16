@@ -3,9 +3,9 @@ class Ball {
     this.p = p
     this.x = Math.random() * canvasWidth
     this.y = Math.random() * canvasHeight
-    this.velX = Math.random() * 10 - 5
-    this.velY = Math.random() * 10 - 5
-    this.radius = Math.random() * 50 + 25
+    this.velX = Math.random() * 3 - 1.5
+    this.velY = Math.random() * 3 - 1.5
+    this.radius = Math.random() * 60 + 20
     this.canvasWidth = canvasWidth
     this.canvasHeight = canvasHeight
   }
