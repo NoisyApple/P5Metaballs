@@ -27,18 +27,22 @@ const sketch = (p) => {
     canvas.parent("Canvas")
   }
 
+  let count = 0
+
   // Draw loop.
   p.draw = () => {
-    p.background("#888")
+    if (count < 100) {
+      p.background("#888")
 
-    marchingSquares(p, pointGrid.points, RESOLUTION)
-    for (let i = 0; i < balls.length; i++) {
-      balls[i].update()
-      // balls[i].draw()
+      marchingSquares(p, pointGrid.points, RESOLUTION)
+      for (let i = 0; i < balls.length; i++) {
+        balls[i].update()
+        // balls[i].draw()
+      }
+
+      pointGrid.update()
+      // pointGrid.draw()
     }
-
-    pointGrid.update()
-    // pointGrid.draw()
   }
 }
 

@@ -1,11 +1,13 @@
+const BIAS = 160
+
 const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
   const pattern = mapSquare(pointA, pointB, pointC, pointD)
 
   // Deconstructed points.
-  const { x: aX, y: aY } = pointA
-  const { x: bX, y: bY } = pointB
-  const { x: cX, y: cY } = pointC
-  const { x: dX, y: dY } = pointD
+  const { x: aX, y: aY, value: aValue } = pointA
+  const { x: bX, y: bY, value: bValue } = pointB
+  const { x: cX, y: cY, value: cValue } = pointC
+  const { x: dX, y: dY, value: dValue } = pointD
 
   // Mid points.
   const aB = { x: (aX + bX) / 2, y: aY }
@@ -13,63 +15,51 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
   const bD = { x: bX, y: (bY + dY) / 2 }
   const cD = { x: (cX + dX) / 2, y: cY }
 
-  // const aB = {
-  //   x: p.lerp(
-  //     pointB.value,
-  //     pointA.value,
-  //     (1 - pointA.value) / (pointB.value - pointA.value)
-  //   ),
-  //   y: aY,
-  // }
-  // const aC = {
-  //   x: aX,
-  //   y: p.lerp(
-  //     pointC.value,
-  //     pointA.value,
-  //     (1 - pointA.value) / (pointC.value - pointA.value)
-  //   ),
-  // }
-  // const bD = {
-  //   x: bX,
-  //   y: p.lerp(
-  //     pointD.value,
-  //     pointB.value,
-  //     (1 - pointB.value) / (pointD.value - pointB.value)
-  //   ),
-  // }
-  // const cD = {
-  //   x: p.lerp(
-  //     pointD.value,
-  //     pointC.value,
-  //     (1 - pointC.value) / (pointD.value - pointC.value)
-  //   ),
-  //   y: cY,
-  // }
+  const aBAmount = (BIAS - aValue) / (bValue - aValue)
+  const aCAmount = (BIAS - aValue) / (cValue - aValue)
+  const bDAmount = (BIAS - bValue) / (dValue - dValue)
+  const cDAmount = (BIAS - cValue) / (dValue - cValue)
+
+  const aBX = p.lerp(aX, bX, aBAmount)
+  const aCY = p.lerp(aY, cY, aCAmount)
+  const bDY = p.lerp(bY, dY, bDAmount)
+  const cDX = p.lerp(cX, dX, cDAmount)
 
   p.push()
   p.strokeWeight(2)
   p.stroke("#FAFF81")
+  // p.noStroke()
+  p.fill("#FAFF81")
 
   // Pattern drawing.
   switch (pattern) {
     case 0:
-    case 15:
       // 0:  0000
       //     0 0
       //     0 0
+      break
+    case 15:
       // 15: 1111
       //     1 1
       //     1 1
+      // p.beginShape()
+      // p.vertex(aX, aY)
+      // p.vertex(bX, bY)
+      // p.vertex(dX, dY)
+      // p.vertex(cX, cY)
+      // p.endShape()
       break
     case 1:
-    case 14:
       // 1:  0001
       //     0 0
       //     0 1
+      p.line(bD.x, bDY, cDX, cD.y)
+      break
+    case 14:
       // 14: 1110
       //     1 1
       //     1 0
-      p.line(bD.x, bD.y, cD.x, cD.y)
+      p.line(bD.x, bDY, cDX, cD.y)
       break
     case 2:
     case 13:
@@ -79,7 +69,7 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 13: 1101
       //     1 1
       //     0 1
-      p.line(aC.x, aC.y, cD.x, cD.y)
+      p.line(aC.x, aCY, cDX, cD.y)
       break
     case 3:
     case 12:
@@ -89,7 +79,7 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 12: 1100
       //     1 1
       //     0 0
-      p.line(aC.x, aC.y, bD.x, bD.y)
+      p.line(aC.x, aCY, bD.x, bDY)
       break
     case 4:
     case 11:
@@ -99,24 +89,26 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 11: 1011
       //     1 0
       //     1 1
-      p.line(aB.x, aB.y, bD.x, bD.y)
+      // p.line(aB.x, aB.y, bD.x, bD.y)
+      p.line(aBX, aB.y, bD.x, bDY)
       break
     case 5:
-    case 10:
+    case 10: {
       // 5:  0101
       //     0 1
       //     0 1
       // 10: 1010
       //     1 0
       //     1 0
-      p.line(aB.x, aB.y, cD.x, cD.y)
+      p.line(aBX, aB.y, cDX, cD.y)
       break
+    }
     case 6:
       // 6:  0110
       //     0 1
       //     1 0
-      p.line(aB.x, aB.y, bD.x, bD.y)
-      p.line(aC.x, aC.y, cD.x, cD.y)
+      p.line(aBX, aB.y, bD.x, bDY)
+      p.line(aC.x, aCY, cDX, cD.y)
       break
     case 7:
     case 8:
@@ -126,14 +118,14 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 8:  1000
       //     1 0
       //     0 0
-      p.line(aB.x, aB.y, aC.x, aC.y)
+      p.line(aBX, aB.y, aC.x, aCY)
       break
     case 9:
       // 9:  1001
       //     1 0
       //     0 1
-      p.line(aB.x, aB.y, aC.x, aC.y)
-      p.line(bD.x, bD.y, cD.x, cD.y)
+      p.line(aBX, aB.y, aC.x, aCY)
+      p.line(bD.x, bDY, cDX, cD.y)
       break
     default:
       break
@@ -142,12 +134,10 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
 }
 
 const mapSquare = (pointA, pointB, pointC, pointD) => {
-  let bias = 160
-
-  let a = pointA.value < bias ? 0 : 1
-  let b = pointB.value < bias ? 0 : 1
-  let c = pointC.value < bias ? 0 : 1
-  let d = pointD.value < bias ? 0 : 1
+  let a = pointA.value < BIAS ? 0 : 1
+  let b = pointB.value < BIAS ? 0 : 1
+  let c = pointC.value < BIAS ? 0 : 1
+  let d = pointD.value < BIAS ? 0 : 1
 
   // const binaryValue = `${pointA.value}${pointB.value}${pointC.value}${pointD.value}`
   const binaryValue = `${a}${b}${c}${d}`
