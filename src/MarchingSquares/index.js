@@ -1,4 +1,5 @@
 import p5 from "p5"
+import PointsGrid from "../PointsGrid/PointsGrid"
 
 // Bias for how the points are determined to be on (1) or off (0) based on their values.
 const BIAS = 160
@@ -8,18 +9,19 @@ const BIAS = 160
  * using the {@link https://en.wikipedia.org/wiki/Marching_squares | Marching Squares algorithm}.
  *
  * @param {p5} p p5 object reference.
- * @param {PointGrid}} pointGrid The point grid to work on.
+ * @param {PointsGrid} pointsGrid The point grid to work on.
  */
-const marchingSquares = (p, pointGrid) => {
-  for (let i = 0; i < pointGrid.length; i += 1)
-    for (let j = 0; j < pointGrid[i].length; j += 1) {
-      if (i + 1 > pointGrid.length - 1 || j + 1 > pointGrid[i].length - 1)
-        continue
+const marchingSquares = (p, pointsGrid) => {
+  const { points } = pointsGrid
 
-      let pointA = pointGrid[i][j]
-      let pointB = pointGrid[i + 1][j]
-      let pointC = pointGrid[i][j + 1]
-      let pointD = pointGrid[i + 1][j + 1]
+  for (let i = 0; i < points.length; i += 1)
+    for (let j = 0; j < points[i].length; j += 1) {
+      if (i + 1 > points.length - 1 || j + 1 > points[i].length - 1) continue
+
+      let pointA = points[i][j]
+      let pointB = points[i + 1][j]
+      let pointC = points[i][j + 1]
+      let pointD = points[i + 1][j + 1]
 
       drawSquarePattern(p, pointA, pointB, pointC, pointD)
     }

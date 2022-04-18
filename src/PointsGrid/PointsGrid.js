@@ -6,9 +6,9 @@ import Point from "./Point/Point"
 /**
  * PointsGrid class.
  */
-class PointGrid {
+class PointsGrid {
   /**
-   * Creates a PointGrid object, this object stores the state of the balls and points
+   * Creates a PointsGrid object, this object stores the state of the balls and points
    * in the sketch.
    *
    * @param {p5} p p5 object reference.
@@ -67,6 +67,24 @@ class PointGrid {
     for (let i = 0; i < this.points.length; i++)
       for (let j = 0; j < this.points[i].length; j++) this.points[i][j].draw()
   }
+
+  /**
+   * Obtains the array of points binded to the points grid.
+   *
+   * @returns {[Point]} An array of points.
+   */
+  get points() {
+    return this.__points__
+  }
+
+  /**
+   * Sets the value of the points array in the points grid.
+   *
+   * @param {[Point]} points The new array of points.
+   */
+  set points(points) {
+    this.__points__ = points
+  }
 }
 
-export default PointGrid
+export default PointsGrid

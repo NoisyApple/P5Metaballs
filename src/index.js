@@ -3,8 +3,10 @@ import "./index.css"
 import p5 from "p5"
 
 import Ball from "./Ball/Ball"
-import PointGrid from "./PointGrid/PointGrid"
-import { marchingSquares } from "./MarchingSquares/functions"
+import PointsGrid from "./PointsGrid/PointsGrid"
+import { marchingSquares } from "./MarchingSquares"
+
+let isRunning = true
 
 // Reference to the button with selector #ToggleButton from the DOM.
 const toggleButton = document.getElementById("ToggleButton")
@@ -24,8 +26,7 @@ const sketch = (p) => {
   const BALL_AMOUNT = 10
 
   let balls
-  let pointGrid
-  let isRunning = true
+  let pointsGrid
 
   // Sketch setup.
   p.setup = () => {
@@ -33,7 +34,7 @@ const sketch = (p) => {
 
     for (let i = 0; i < balls.length; i++) balls[i] = new Ball(p, WIDTH, HEIGHT)
 
-    pointGrid = new PointGrid(p, balls, WIDTH, HEIGHT, RESOLUTION)
+    pointsGrid = new PointsGrid(p, balls, WIDTH, HEIGHT, RESOLUTION)
 
     let canvas = p.createCanvas(WIDTH, HEIGHT)
     canvas.parent("Sketch")
@@ -44,15 +45,15 @@ const sketch = (p) => {
     if (isRunning) {
       p.background("#888")
 
-      marchingSquares(p, pointGrid.points, RESOLUTION)
+      marchingSquares(p, pointsGrid, RESOLUTION)
 
       for (let i = 0; i < balls.length; i++) {
         balls[i].update()
         // balls[i].draw() // Enables ball visualization.
       }
 
-      pointGrid.update()
-      // pointGrid.draw() // Enables point visualization.
+      pointsGrid.update()
+      // pointsGrid.draw() // Enables point visualization.
     }
   }
 }
