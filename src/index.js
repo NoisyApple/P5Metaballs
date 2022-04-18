@@ -14,6 +14,12 @@ const RESOLUTION = 20
 let balls
 let pointGrid
 
+let isRunning = true
+
+const toggleButton = document.getElementById("toggleButton")
+
+toggleButton.addEventListener("click", () => (isRunning = !isRunning))
+
 const sketch = (p) => {
   // Canvas setup.
   p.setup = () => {
@@ -27,11 +33,9 @@ const sketch = (p) => {
     canvas.parent("Canvas")
   }
 
-  let count = 0
-
   // Draw loop.
   p.draw = () => {
-    if (count < 100) {
+    if (isRunning) {
       p.background("#888")
 
       marchingSquares(p, pointGrid.points, RESOLUTION)
