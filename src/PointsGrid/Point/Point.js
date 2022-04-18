@@ -23,7 +23,8 @@ class Point {
    */
   draw() {
     this.p.push()
-    this.p.stroke(this.value)
+    this.p.colorMode(this.p.HSB)
+    this.p.stroke(this.value, 100, 80)
     this.p.strokeWeight(8)
     this.p.point(this.x, this.y)
     this.p.pop()

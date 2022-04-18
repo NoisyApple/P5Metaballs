@@ -43,7 +43,7 @@ const sketch = (p) => {
   // Draw loop.
   p.draw = () => {
     if (isRunning) {
-      p.background("#888")
+      p.background("white")
 
       marchingSquares(p, pointsGrid, RESOLUTION)
 

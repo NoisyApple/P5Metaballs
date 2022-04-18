@@ -80,7 +80,7 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
 
   p.push()
   p.noStroke()
-  p.fill("dodgerblue")
+  p.fill("black")
 
   // Pattern drawing.
   switch (pattern) {
