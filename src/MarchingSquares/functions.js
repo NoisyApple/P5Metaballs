@@ -1,5 +1,60 @@
+import p5 from "p5"
+
+// Bias for how the points are determined to be on (1) or off (0) based on their values.
 const BIAS = 160
 
+/**
+ * Iterates through the given point grid determining which pattern should be drawn based on the values of the points
+ * using the {@link https://en.wikipedia.org/wiki/Marching_squares | Marching Squares algorithm}.
+ *
+ * @param {p5} p p5 object reference.
+ * @param {PointGrid}} pointGrid The point grid to work on.
+ */
+const marchingSquares = (p, pointGrid) => {
+  for (let i = 0; i < pointGrid.length; i += 1)
+    for (let j = 0; j < pointGrid[i].length; j += 1) {
+      if (i + 1 > pointGrid.length - 1 || j + 1 > pointGrid[i].length - 1)
+        continue
+
+      let pointA = pointGrid[i][j]
+      let pointB = pointGrid[i + 1][j]
+      let pointC = pointGrid[i][j + 1]
+      let pointD = pointGrid[i + 1][j + 1]
+
+      drawSquarePattern(p, pointA, pointB, pointC, pointD)
+    }
+}
+
+/**
+ * Takes 4 points and determines if each of them are on or off based on the global BIAS, then constructs a binary
+ * number with them.
+ *
+ * @param {Point} pointA Point A.
+ * @param {Point} pointB Point B.
+ * @param {Point} pointC Point C.
+ * @param {Point} pointD Point D.
+ * @returns {String} A binary number.
+ */
+const mapSquare = (pointA, pointB, pointC, pointD) => {
+  let a = pointA.value < BIAS ? 0 : 1
+  let b = pointB.value < BIAS ? 0 : 1
+  let c = pointC.value < BIAS ? 0 : 1
+  let d = pointD.value < BIAS ? 0 : 1
+
+  const binaryValue = `${a}${b}${c}${d}`
+
+  return parseInt(binaryValue, 2)
+}
+
+/**
+ * Takes 4 points and draws a pattern based on the values from them.
+ *
+ * @param {p5} p p5 object reference.
+ * @param {Point} pointA Point A.
+ * @param {Point} pointB Point B.
+ * @param {Point} pointC Point C.
+ * @param {Point} pointD Point D.
+ */
 const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
   const pattern = mapSquare(pointA, pointB, pointC, pointD)
 
@@ -9,21 +64,21 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
   const { x: cX, y: cY, value: cValue } = pointC
   const { x: dX, y: dY, value: dValue } = pointD
 
+  // Amount to be applied in lerp function.
   const aBAmount = (BIAS - aValue) / (bValue - aValue)
   const aCAmount = (BIAS - aValue) / (cValue - aValue)
   const bDAmount = (BIAS - bValue) / (dValue - bValue)
   const cDAmount = (BIAS - cValue) / (dValue - cValue)
 
+  // Interpolated values between points.
   const aBX = p.lerp(aX, bX, aBAmount)
   const aCY = p.lerp(aY, cY, aCAmount)
   const bDY = p.lerp(bY, dY, bDAmount)
   const cDX = p.lerp(cX, dX, cDAmount)
 
   p.push()
-  p.strokeWeight(2)
-  p.stroke("#FAFF81")
   p.noStroke()
-  p.fill("#FAFF81")
+  p.fill("dodgerblue")
 
   // Pattern drawing.
   switch (pattern) {
@@ -36,9 +91,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 15: 1111
       //     1 1
       //     1 1
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(bX, bY)
@@ -50,11 +102,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 1:  0001
       //     0 0
       //     0 1
-      p.line(bX, bDY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(bX, bDY)
       p.vertex(dX, dY)
@@ -65,11 +112,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 14: 1110
       //     1 1
       //     1 0
-      p.line(bX, bDY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(bX, bY)
@@ -82,11 +124,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 2:  0010
       //     0 0
       //     1 0
-      p.line(aX, aCY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aCY)
       p.vertex(cDX, cY)
@@ -97,12 +134,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 13: 1101
       //     1 1
       //     0 1
-      p.line(aX, aCY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-      // p.fill("hotpink")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(bX, bY)
@@ -115,11 +146,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 3:  0011
       //     0 0
       //     1 1
-      p.line(aX, aCY, bX, bDY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aCY)
       p.vertex(bX, bDY)
@@ -131,11 +157,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 12: 1100
       //     1 1
       //     0 0
-      p.line(aX, aCY, bX, bDY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(bX, bY)
@@ -147,11 +168,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 4:  0100
       //     0 1
       //     0 0
-      p.line(aBX, aY, bX, bDY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aBX, aY)
       p.vertex(bX, bY)
@@ -162,11 +178,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 11: 1011
       //     1 0
       //     1 1
-      p.line(aBX, aY, bX, bDY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(aBX, aY)
@@ -179,11 +190,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 5:  0101
       //     0 1
       //     0 1
-      p.line(aBX, aY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aBX, aY)
       p.vertex(bX, bY)
@@ -195,11 +201,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 10: 1010
       //     1 0
       //     1 0
-      p.line(aBX, aY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(aBX, aY)
@@ -211,12 +212,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 6:  0110
       //     0 1
       //     1 0
-      p.line(aBX, aY, bX, bDY)
-      p.line(aX, aCY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aBX, aY)
       p.vertex(bX, bY)
@@ -233,11 +228,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 7:  0111
       //     0 1
       //     1 1
-      p.line(aBX, aY, aX, aCY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aBX, aY)
       p.vertex(bX, bY)
@@ -250,11 +240,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 8:  1000
       //     1 0
       //     0 0
-      p.line(aBX, aY, aX, aCY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(aBX, aY)
@@ -265,12 +250,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 9:  1001
       //     1 0
       //     0 1
-      p.line(aBX, aY, aX, aCY)
-      p.line(bX, bDY, cDX, cY)
-
-      p.noStroke()
-      p.fill("dodgerblue")
-
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(aBX, aY)
@@ -287,33 +266,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       break
   }
   p.pop()
-}
-
-const mapSquare = (pointA, pointB, pointC, pointD) => {
-  let a = pointA.value < BIAS ? 0 : 1
-  let b = pointB.value < BIAS ? 0 : 1
-  let c = pointC.value < BIAS ? 0 : 1
-  let d = pointD.value < BIAS ? 0 : 1
-
-  // const binaryValue = `${pointA.value}${pointB.value}${pointC.value}${pointD.value}`
-  const binaryValue = `${a}${b}${c}${d}`
-
-  return parseInt(binaryValue, 2)
-}
-
-const marchingSquares = (p, pointArray) => {
-  for (let i = 0; i < pointArray.length; i += 1)
-    for (let j = 0; j < pointArray[i].length; j += 1) {
-      if (i + 1 > pointArray.length - 1 || j + 1 > pointArray[i].length - 1)
-        continue
-
-      let pointA = pointArray[i][j]
-      let pointB = pointArray[i + 1][j]
-      let pointC = pointArray[i][j + 1]
-      let pointD = pointArray[i + 1][j + 1]
-
-      drawSquarePattern(p, pointA, pointB, pointC, pointD)
-    }
 }
 
 export { drawSquarePattern, mapSquare, marchingSquares }

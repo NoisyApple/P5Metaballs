@@ -1,16 +1,32 @@
+import p5 from "p5"
+
+import Ball from "../Ball/Ball"
 import Point from "./Point/Point"
 
+/**
+ * PointsGrid class.
+ */
 class PointGrid {
+  /**
+   * Creates a PointGrid object, this object stores the state of the balls and points
+   * in the sketch.
+   *
+   * @param {p5} p p5 object reference.
+   * @param {[Ball]} balls An array of Ball objects.
+   * @param {number} canvasWidth The width of the canvas.
+   * @param {number} canvasHeight The height of the canvas.
+   * @param {number} canvasResolution The resolution of the canvas.
+   */
   constructor(p, balls, canvasWidth, canvasHeight, canvasResolution) {
     this.p = p
     this.balls = balls
     this.canvasWidth = canvasWidth
     this.canvasHeight = canvasHeight
     this.canvasResolution = canvasResolution
-    this.points = new Array(canvasWidth / canvasResolution + 1)
+    this.points = new Array(Math.floor(canvasWidth / canvasResolution + 1))
 
     for (let i = 0; i < this.points.length; i++)
-      this.points[i] = new Array(canvasHeight / canvasResolution + 1)
+      this.points[i] = new Array(Math.floor(canvasWidth / canvasResolution + 1))
 
     for (let i = 0; i < this.points.length; i++)
       for (let j = 0; j < this.points[i].length; j++)
@@ -21,6 +37,9 @@ class PointGrid {
         )
   }
 
+  /**
+   * Updates the state of the elements in the points grid.
+   */
   update() {
     for (let i = 0; i < this.points.length; i++)
       for (let j = 0; j < this.points[i].length; j++) {
@@ -29,52 +48,24 @@ class PointGrid {
 
         let sum = 0
 
+        // Sums the radius of each ball divided by the distance from the current point to it.
         this.balls.forEach((b) => {
           let d = this.p.dist(point.x, point.y, b.x, b.y)
+
+          // NOTE: "75" might probabbly be acting as some kind of bias value.
           sum += (75 * b.radius) / d
-          // if (this.pointBallCollision(point, b)) point.value = 1
         })
-        point.value = sum
+
+        point.value = sum // Assigns the sum to the value of the point.
       }
   }
 
+  /**
+   * Draws the points in the points grid.
+   */
   draw() {
     for (let i = 0; i < this.points.length; i++)
       for (let j = 0; j < this.points[i].length; j++) this.points[i][j].draw()
-  }
-
-  pointBallCollision(point, ball) {
-    // let { x, y } = point
-
-    // let minX = x - this.canvasWidth / this.canvasResolution / 2
-    // let minY = y - this.canvasHeight / this.canvasResolution / 2
-    // let ballXDist = Math.abs(ball.x - minX)
-    // let ballYDist = Math.abs(ball.y - minY)
-
-    // if (
-    //   ballXDist >
-    //   this.canvasWidth / this.canvasResolution / 2 + ball.radius / 2
-    // )
-    //   return false
-    // if (
-    //   ballYDist >
-    //   this.canvasHeight / this.canvasResolution / 2 + ball.radius / 2
-    // )
-    //   return false
-
-    // if (ballXDist <= this.canvasWidth / this.canvasResolution / 2) return true
-    // if (ballYDist <= this.canvasHeight / this.canvasResolution / 2) return true
-
-    // let cornerDist =
-    //   (ballXDist - this.canvasWidth / this.canvasResolution / 2) ^
-    //   (2 + (ballYDist - this.canvasHeight / this.canvasResolution / 2)) ^
-    //   2
-
-    // return cornerDist <= ((ball.radius / 2) ^ 2)
-
-    let d = this.p.dist(point.x, point.y, ball.x, ball.y)
-
-    return d < 4 + ball.radius
   }
 }
 
