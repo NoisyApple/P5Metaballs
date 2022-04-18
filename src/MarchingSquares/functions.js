@@ -9,12 +9,6 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
   const { x: cX, y: cY, value: cValue } = pointC
   const { x: dX, y: dY, value: dValue } = pointD
 
-  // Mid points.
-  const aB = { x: (aX + bX) / 2, y: aY }
-  const aC = { x: aX, y: (aY + cY) / 2 }
-  const bD = { x: bX, y: (bY + dY) / 2 }
-  const cD = { x: (cX + dX) / 2, y: cY }
-
   const aBAmount = (BIAS - aValue) / (bValue - aValue)
   const aCAmount = (BIAS - aValue) / (cValue - aValue)
   const bDAmount = (BIAS - bValue) / (dValue - bValue)
@@ -28,7 +22,7 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
   p.push()
   p.strokeWeight(2)
   p.stroke("#FAFF81")
-  // p.noStroke()
+  p.noStroke()
   p.fill("#FAFF81")
 
   // Pattern drawing.
@@ -56,22 +50,22 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 1:  0001
       //     0 0
       //     0 1
-      p.line(bD.x, bDY, cDX, cD.y)
+      p.line(bX, bDY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
-      p.vertex(bD.x, bDY)
+      p.vertex(bX, bDY)
       p.vertex(dX, dY)
-      p.vertex(cDX, cD.y)
+      p.vertex(cDX, cY)
       p.endShape()
       break
     case 14:
       // 14: 1110
       //     1 1
       //     1 0
-      p.line(bD.x, bDY, cDX, cD.y)
+      p.line(bX, bDY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
@@ -79,8 +73,8 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(bX, bY)
-      p.vertex(bD.x, bDY)
-      p.vertex(cDX, cD.y)
+      p.vertex(bX, bDY)
+      p.vertex(cDX, cY)
       p.vertex(cX, cY)
       p.endShape()
       break
@@ -88,14 +82,14 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 2:  0010
       //     0 0
       //     1 0
-      p.line(aC.x, aCY, cDX, cD.y)
+      p.line(aX, aCY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
-      p.vertex(aC.x, aCY)
-      p.vertex(cDX, cD.y)
+      p.vertex(aX, aCY)
+      p.vertex(cDX, cY)
       p.vertex(cX, cY)
       p.endShape()
       break
@@ -103,31 +97,32 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 13: 1101
       //     1 1
       //     0 1
-      p.line(aC.x, aCY, cDX, cD.y)
+      p.line(aX, aCY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
+      // p.fill("hotpink")
 
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(bX, bY)
       p.vertex(dX, dY)
-      p.vertex(aC.x, aCY)
-      p.vertex(cDX, cD.y)
+      p.vertex(cDX, cY)
+      p.vertex(aX, aCY)
       p.endShape()
       break
     case 3:
       // 3:  0011
       //     0 0
       //     1 1
-      p.line(aC.x, aCY, bD.x, bDY)
+      p.line(aX, aCY, bX, bDY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
-      p.vertex(aC.x, aCY)
-      p.vertex(bD.x, bDY)
+      p.vertex(aX, aCY)
+      p.vertex(bX, bDY)
       p.vertex(dX, dY)
       p.vertex(cX, cY)
       p.endShape()
@@ -136,47 +131,46 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 12: 1100
       //     1 1
       //     0 0
-      p.line(aC.x, aCY, bD.x, bDY)
+      p.line(aX, aCY, bX, bDY)
 
       p.noStroke()
       p.fill("dodgerblue")
-      p.fill("hotpink")
 
       p.beginShape()
       p.vertex(aX, aY)
       p.vertex(bX, bY)
-      p.vertex(bD.x, bDY)
-      p.vertex(aC.x, aCY)
+      p.vertex(bX, bDY)
+      p.vertex(aX, aCY)
       p.endShape()
       break
     case 4:
       // 4:  0100
       //     0 1
       //     0 0
-      p.line(aBX, aB.y, bD.x, bDY)
+      p.line(aBX, aY, bX, bDY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
-      p.vertex(aBX, aB.y)
+      p.vertex(aBX, aY)
       p.vertex(bX, bY)
-      p.vertex(bD.x, bDY)
+      p.vertex(bX, bDY)
       p.endShape()
       break
     case 11:
       // 11: 1011
       //     1 0
       //     1 1
-      p.line(aBX, aB.y, bD.x, bDY)
+      p.line(aBX, aY, bX, bDY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
       p.vertex(aX, aY)
-      p.vertex(aBX, aB.y)
-      p.vertex(bD.x, bDY)
+      p.vertex(aBX, aY)
+      p.vertex(bX, bDY)
       p.vertex(dX, dY)
       p.vertex(cX, cY)
       p.endShape()
@@ -185,31 +179,31 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 5:  0101
       //     0 1
       //     0 1
-      p.line(aBX, aB.y, cDX, cD.y)
+      p.line(aBX, aY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
-      p.vertex(aBX, aB.y)
+      p.vertex(aBX, aY)
       p.vertex(bX, bY)
       p.vertex(dX, dY)
-      p.vertex(cDX, cD.y)
+      p.vertex(cDX, cY)
       p.endShape()
       break
     case 10:
       // 10: 1010
       //     1 0
       //     1 0
-      p.line(aBX, aB.y, cDX, cD.y)
+      p.line(aBX, aY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
       p.vertex(aX, aY)
-      p.vertex(aBX, aB.y)
-      p.vertex(cDX, cD.y)
+      p.vertex(aBX, aY)
+      p.vertex(cDX, cY)
       p.vertex(cX, cY)
       p.endShape()
       break
@@ -217,21 +211,21 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 6:  0110
       //     0 1
       //     1 0
-      p.line(aBX, aB.y, bD.x, bDY)
-      p.line(aC.x, aCY, cDX, cD.y)
+      p.line(aBX, aY, bX, bDY)
+      p.line(aX, aCY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
-      p.vertex(aBX, aB.y)
+      p.vertex(aBX, aY)
       p.vertex(bX, bY)
-      p.vertex(bD.x, bDY)
+      p.vertex(bX, bDY)
       p.endShape()
 
       p.beginShape()
-      p.vertex(aC.x, aCY)
-      p.vertex(cDX, cD.y)
+      p.vertex(aX, aCY)
+      p.vertex(cDX, cY)
       p.vertex(cX, cY)
       p.endShape()
       break
@@ -239,54 +233,54 @@ const drawSquarePattern = (p, pointA, pointB, pointC, pointD) => {
       // 7:  0111
       //     0 1
       //     1 1
-      p.line(aBX, aB.y, aC.x, aCY)
+      p.line(aBX, aY, aX, aCY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
-      p.vertex(aBX, aB.y)
+      p.vertex(aBX, aY)
       p.vertex(bX, bY)
       p.vertex(dX, dY)
       p.vertex(cX, cY)
-      p.vertex(aC.x, aCY)
+      p.vertex(aX, aCY)
       p.endShape()
       break
     case 8:
       // 8:  1000
       //     1 0
       //     0 0
-      p.line(aBX, aB.y, aC.x, aCY)
+      p.line(aBX, aY, aX, aCY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
       p.vertex(aX, aY)
-      p.vertex(aBX, aB.y)
-      p.vertex(aC.x, aCY)
+      p.vertex(aBX, aY)
+      p.vertex(aX, aCY)
       p.endShape()
       break
     case 9:
       // 9:  1001
       //     1 0
       //     0 1
-      p.line(aBX, aB.y, aC.x, aCY)
-      p.line(bD.x, bDY, cDX, cD.y)
+      p.line(aBX, aY, aX, aCY)
+      p.line(bX, bDY, cDX, cY)
 
       p.noStroke()
       p.fill("dodgerblue")
 
       p.beginShape()
       p.vertex(aX, aY)
-      p.vertex(aBX, aB.y)
-      p.vertex(aC.x, aCY)
+      p.vertex(aBX, aY)
+      p.vertex(aX, aCY)
       p.endShape()
 
       p.beginShape()
-      p.vertex(bD.x, bDY)
+      p.vertex(bX, bDY)
       p.vertex(dX, dY)
-      p.vertex(cDX, cD.y)
+      p.vertex(cDX, cY)
       p.endShape()
       break
     default:
